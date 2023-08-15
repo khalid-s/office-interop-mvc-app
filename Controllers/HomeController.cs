@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
+using Microsoft.Office.Interop.Word;
+
 namespace DocumentGenerator.Controllers
 {
     public class HomeController : Controller
@@ -15,6 +17,18 @@ namespace DocumentGenerator.Controllers
 
         public IActionResult Index()
         {
+            Application wordApplication = new Application();
+            Document doc = wordApplication.Documents.Add();
+
+            Paragraph para = doc.Paragraphs.Add();
+            para.Range.Text = "Hello, this is a Word document generated using Interop.";
+
+            // Save the document
+            doc.SaveAs("GeneratedDocument.doc");
+
+            // Close the application
+            wordApplication.Quit();
+
             return View();
         }
 
